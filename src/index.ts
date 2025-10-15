@@ -8,7 +8,7 @@ app.get("/", (c) => {
   return c.text("Hello Hono!");
 });
 
-app.get("/test1", (c) => {
+app.get("/test1", async (c) => {
   let result: { success: boolean; data: any; msg: string } = {
     success: true,
     data: null,
@@ -16,6 +16,22 @@ app.get("/test1", (c) => {
   };
   try {
     let q = c?.req?.query("q");
+    result.data = q;
+    return c.json(result);
+  } catch (error: any) {
+    return c.json(result);
+  }
+});
+
+app.post("/test1", async (c) => {
+  let result: { success: boolean; data: any; msg: string } = {
+    success: true,
+    data: null,
+    msg: ``,
+  };
+  try {
+    const body = await c?.req?.parseBody(); //? 런타임에러 방지하기 위해 넣음 null safety 라는 용어임
+    let q = body["q"];
     result.data = q;
     return c.json(result);
   } catch (error: any) {
