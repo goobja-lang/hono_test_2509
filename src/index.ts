@@ -1,10 +1,28 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 
+import * as dotenv from "dotenv";
+import { AppDataSource } from "./data-source1.js";
+
+const envFile =
+  process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+dotenv.config({ path: envFile });
+
 const app = new Hono();
 
+/** DB 연결 */
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization:", err);
+  });
+/** DB 연결 END */
+
 app.get("/", (c) => {
-  //c 는 서버자체임
   return c.text("Hello Hono!");
 });
 
@@ -22,7 +40,6 @@ app.get("/test1", async (c) => {
     return c.json(result);
   }
 });
-
 app.post("/test1", async (c) => {
   let result: { success: boolean; data: any; msg: string } = {
     success: true,
@@ -30,7 +47,7 @@ app.post("/test1", async (c) => {
     msg: ``,
   };
   try {
-    const body = await c?.req?.parseBody(); //? 런타임에러 방지하기 위해 넣음 null safety 라는 용어임
+    const body = await c?.req?.parseBody();
     let q = body["q"];
     result.data = q;
     return c.json(result);
