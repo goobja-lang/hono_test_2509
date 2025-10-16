@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 import { AppDataSource } from "./data-source1.js"; //AppDataSource 싱글톤 코드임
 import { TUser } from "./entities/TUser.js";
 import user_router from "./router/user_router.js";
-import board_router from "./router/user_router.js";
+import board_router from "./router/board_router.js";
 
 const envFile =
   process.env.NODE_ENV === "production"

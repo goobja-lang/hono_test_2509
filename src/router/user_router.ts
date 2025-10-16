@@ -3,7 +3,7 @@ import { AppDataSource } from "../data-source1.js";
 
 const router = new Hono();
 
-router.get("/test1", async (c) => {
+router.get("/", async (c) => {
   let result: { success: boolean; data: any; msg: string } = {
     success: true,
     data: null,
