@@ -50,6 +50,8 @@ app.post("/test1", async (c) => {
   try {
     const body = await c?.req?.parseBody();
     let q = body["q"];
+    let username = String(body["username"]);
+    let password = String(body["password"]);
     const userRepo = AppDataSource.getRepository(TUser);
     let newUser = new TUser();
     newUser.username = "테스트유저입니다";
