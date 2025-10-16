@@ -2,7 +2,8 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 
 import * as dotenv from "dotenv";
-import { AppDataSource } from "./data-source1.js";
+import { AppDataSource } from "./data-source1.js"; //AppDataSource 싱글톤 코드임
+import { TUser } from "./entities/TUser.js";
 
 const envFile =
   process.env.NODE_ENV === "production"
@@ -49,7 +50,12 @@ app.post("/test1", async (c) => {
   try {
     const body = await c?.req?.parseBody();
     let q = body["q"];
-    result.data = q;
+    const userRepo = AppDataSource.getRepository(TUser);
+    let newUser = new TUser();
+    newUser.username = "테스트유저입니다";
+    newUser.password = "aaaa";
+    newUser = await userRepo.save(newUser);
+    result.data = newUser;
     return c.json(result);
   } catch (error: any) {
     return c.json(result);
