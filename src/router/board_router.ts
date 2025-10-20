@@ -11,9 +11,11 @@ router.get("/", async (c) => {
     msg: ``,
   };
   try {
-    result.data = "board router 잘 작동합니다";
+    result.data = "board router 잘 작동 합니다";
     return c.json(result);
   } catch (error: any) {
+    result.success = false;
+    result.msg = `server error. ${error?.message ?? ""}`;
     return c.json(result);
   }
 });
@@ -30,11 +32,13 @@ router.get("/get_memo_list", async (c) => {
     result.data = memo;
     return c.json(result);
   } catch (error: any) {
+    result.success = false;
+    result.msg = `server error. ${error?.message ?? ""}`;
     return c.json(result);
   }
 });
 
-router.post("/test1", async (c) => {
+router.post("/upsert", async (c) => {
   let result: { success: boolean; data: any; msg: string } = {
     success: true,
     data: null,
@@ -54,6 +58,8 @@ router.post("/test1", async (c) => {
     result.data = newBoard;
     return c.json(result);
   } catch (error: any) {
+    result.success = false;
+    result.msg = `server error. ${error?.message ?? ""}`;
     return c.json(result);
   }
 });
